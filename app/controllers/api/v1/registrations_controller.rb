@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::::RegistrationsController < Devise::RegistrationsController
+class Api::V1::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -15,10 +15,14 @@ class Api::V1::::RegistrationsController < Devise::RegistrationsController
     email = user[:email]
     password = user[:password]
     password_confirmation = user[:password_confirmation]
+    first_name = user[:first_name]
+    last_name = user[:last_name]
+    
+    role = user[:role]
 
-    @user = User.create(email:, password:, password_confirmation:)
+    @user = User.create(email:email, password:password, password_confirmation:password_confirmation,first_name:first_name,last_name:last_name,role:role)
     if @user.save
-      render json: { token: @user.authentication_token }
+      render json: { token: @user.authentication_token ,user:@user}
     else
       render json: { message: @user.errors.full_messages }.as_json
     end

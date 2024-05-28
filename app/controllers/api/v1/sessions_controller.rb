@@ -13,7 +13,7 @@ class Api::V1::SessionsController < ApplicationController
 
           if user.valid_password?(password)
 
-            render json: user.as_json(only: %i[id email authentication_token]), status: :created
+            render json: { token: user.authentication_token,user:user }
           else
 
             message_obj = { message: 'Wrong Password' }

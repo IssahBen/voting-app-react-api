@@ -3,7 +3,8 @@ class Api::V1::BallotsController < ApplicationController
 
   # GET /ballots
   def index
-    @ballots = Ballot.all
+    
+    @ballots = current_user.ballots
 
     render json: @ballots
   end
@@ -16,14 +17,15 @@ class Api::V1::BallotsController < ApplicationController
 
   # POST /ballots
   def create
+    puts current_user
     name = params[:ballot][:name]
     description = params[:ballot][:description]
-    @ballot = Ballot.new(name:name,description:description)
+    @ballot = Ballot.new(name:name,description:description,user_id:current_user.id)
 
     if @ballot.save
-      render json: @ballot, status: :created
+      render json: {message:"success"}.as_json(), status: :created
     else
-      render json: @ballot.errors, status: :unprocessable_entity
+      render json: {errors:@ballot.errors}.as_json(), status: :unprocessable_entity
     end
   end
 
