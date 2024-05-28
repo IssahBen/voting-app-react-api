@@ -31,16 +31,19 @@ class Api::V1::BallotsController < ApplicationController
 
   # PATCH/PUT /ballots/1
   def update
-    if @ballot.update(ballot_params)
-      render json: @ballot
+    name = params[:ballot][:name]
+    description = params[:ballot][:description]
+    if @ballot.update(name:name,description:description)
+      render json: {message:"successs"}
     else
-      render json: @ballot.errors, status: :unprocessable_entity
+      render json: {errors:@ballot.errors}, status: :unprocessable_entity
     end
   end
 
   # DELETE /ballots/1
   def destroy
     @ballot.destroy!
+    render json: {message: "success"}.as_json()
   end
 
   private

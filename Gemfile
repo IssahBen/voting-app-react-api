@@ -49,3 +49,5 @@ end
 gem 'simple_token_authentication', '~> 1.0' # see semver.org
 
 gem "devise", "~> 4.9"
+
+gem 'acts_as_votable'
