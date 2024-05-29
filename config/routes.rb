@@ -15,7 +15,7 @@ devise_for :users
         post 'signup',to: "registrations#create"  
       end
       resources :ballots do
-        resources :candidates, only: %i[create new edit update index]
+        resources :candidates
       end
     end
   end
