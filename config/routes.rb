@@ -8,10 +8,14 @@ devise_for :users
   namespace :api do
     namespace :v1 do
       resources :ballots
+      
       post "login", to: "sessions#new"
       delete "logout",to: "sessions#destroy"
       devise_scope :user do
         post 'signup',to: "registrations#create"  
+      end
+      resources :ballots do
+        resources :candidates, only: %i[create new edit update index]
       end
     end
   end
