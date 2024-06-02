@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   acts_as_token_authenticatable
+  acts_as_voter
   has_many :ballots
 
   # Include default devise modules. Others available are:
