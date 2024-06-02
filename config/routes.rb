@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+ 
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 devise_for :users
@@ -16,6 +17,7 @@ devise_for :users
       end
       resources :ballots do
         resources :candidates
+        resources :voters
       end
     end
   end
