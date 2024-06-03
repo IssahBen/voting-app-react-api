@@ -7,3 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+Voter.create!(first_name:"Kansa",last_name:"Aba",ballot_id:16,email:"kansa@gmail.com")
+Voter.create!(first_name:"Kansas",last_name:"Aban",ballot_id:16,email:"kansas@gmail.com")

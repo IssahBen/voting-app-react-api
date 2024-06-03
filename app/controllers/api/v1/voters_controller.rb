@@ -3,6 +3,7 @@ class Api::V1::VotersController < ApplicationController
 
   # GET /voters
   def index
+    puts params
      ballot_id = params[:ballot_id]
      @ballot = Ballot.find(ballot_id)
      @voters = @ballot.voters
@@ -38,6 +39,7 @@ class Api::V1::VotersController < ApplicationController
     first_name = params[:voter][:first_name]
     last_name = params[:voter][:last_name]
     email = params[:voter][:email]
+    @voter = Voter.find(params[:id])
     if @voter.update(email:email,first_name:first_name,last_name:last_name)
       render json: {message:"success"}
     else
@@ -49,7 +51,9 @@ class Api::V1::VotersController < ApplicationController
   def destroy
     id = params[:id]
     @voter = Voter.find(id)
-    @voter.destroy!
+    if @voter.destroy!
+      render json: {message:"success"}
+    end 
   end
 
    
