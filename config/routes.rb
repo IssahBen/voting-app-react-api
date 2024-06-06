@@ -11,9 +11,12 @@ devise_for :users
       resources :ballots
       
       post "login", to: "sessions#new"
+      put "update", to: "sessions#update"
+      put "activate", to: "ballots#activate"
       delete "logout",to: "sessions#destroy"
       devise_scope :user do
         post 'signup',to: "registrations#create"  
+        put 'update',to: "registrations#update"  
       end
       resources :ballots do
         resources :candidates

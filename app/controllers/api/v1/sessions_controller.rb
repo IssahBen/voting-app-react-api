@@ -33,5 +33,32 @@ class Api::V1::SessionsController < ApplicationController
         render json: { message: 'Success' }
       end
 
-      def signup; end
+      
+       
+  def update
+    
+    email = params[:user][:email]
+    first_name = params[:user][:first_name]
+    last_name = params[:user][:last_name]
+    current_password = params[:user][:current_password]
+    new_password = params[:user][:new_password]
+    current_user = User.where(email:email).first
+    if new_password == "" && current_user.valid_password?(current_password)
+      current_user.update(email:email,first_name:first_name,last_name:last_name)
+      if current_user.save 
+        render json: {message:"success"}
+      else
+        render json:{errors:current_user.errors.full_messages}
+      end
+    end
+    if new_password != "" && current_user.valid_password?(current_password)
+      current_user.update(email:email,first_name:first_name,last_name:last_name,password: new_password)
+      if current_user.save 
+        render json: {message:"success"}
+      else
+        render json:{errors:current_user.errors.full_messages}
+      end
+    end
+  end
+    
 end

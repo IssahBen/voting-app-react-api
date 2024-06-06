@@ -40,6 +40,23 @@ class Api::V1::BallotsController < ApplicationController
     end
   end
 
+  def activate 
+    ballot_id = params[:ballot_id]
+    @ballot = Ballot.find(ballot_id)
+
+    if @ballot.status == "inactive"
+        @ballot.update(status: "active")
+        @ballot.save
+        render json: @ballot.as_json()
+    else
+      @ballot.update(status: "inactive")
+      @ballot.save
+      render json: @ballot.as_json()
+    end
+
+  end
+
+
   # DELETE /ballots/1
   def destroy
     @ballot.destroy!

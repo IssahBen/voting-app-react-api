@@ -33,10 +33,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # PUT /resource
-  # def update
-  #   super
-  # end
+
 
   # DELETE /resource
   # def destroy
