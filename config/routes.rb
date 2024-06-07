@@ -13,6 +13,7 @@ devise_for :users
       post "login", to: "sessions#new"
       put "update", to: "sessions#update"
       put "activate", to: "ballots#activate"
+      get "pollinfo", to: "votingarea#pollinfo"
       delete "logout",to: "sessions#destroy"
       devise_scope :user do
         post 'signup',to: "registrations#create"  

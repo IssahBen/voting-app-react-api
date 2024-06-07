@@ -19,13 +19,41 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     last_name = user[:last_name]
     
     role = user[:role]
+    if role == "official"
+      @user = User.create(email:email, password:password, password_confirmation:password_confirmation,first_name:first_name,last_name:last_name,role:role)
+      if @user.save
+        render json: { token: @user.authentication_token ,user:@user}
+      else
+        render json: { message: @user.errors.full_messages }.as_json
+      end
+    else 
+      ballot_id =check_eligibility(email,first_name,last_name)
+      
+        
+      if ballot_id 
+       
+        @user = User.create(email:email, password:password, password_confirmation:password_confirmation,first_name:first_name,last_name:last_name,role:role)
+        if @user.save
+          render json: { token: @user.authentication_token ,user:@user,ballotId:ballot_id}.as_json
+        else
+          puts @user.errors.full_messages
+          render json: { message: "Not a registered Voter" }.as_json
+        end
+      end 
+    end 
 
-    @user = User.create(email:email, password:password, password_confirmation:password_confirmation,first_name:first_name,last_name:last_name,role:role)
-    if @user.save
-      render json: { token: @user.authentication_token ,user:@user}
-    else
-      render json: { message: @user.errors.full_messages }.as_json
-    end
+
+
+  end
+
+  private
+  def check_eligibility(email,first_name,last_name)
+    Voter.all.each do |voter|
+      if email == voter.email && first_name == voter.first_name && last_name == voter.last_name
+        return voter.ballot.id
+      end
+    end 
+    
   end
 
   # GET /resource/edit

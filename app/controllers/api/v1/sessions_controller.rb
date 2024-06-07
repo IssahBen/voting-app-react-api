@@ -12,8 +12,12 @@ class Api::V1::SessionsController < ApplicationController
         if user
 
           if user.valid_password?(password)
-
-            render json: { token: user.authentication_token,user:user }
+            if user.role != "voter"
+              render json: { token: user.authentication_token,user:user }
+            else 
+              ballot_id = check_eligibility(user.email,user.first_name,user.last_name)
+              render json: { token: user.authentication_token ,user:user,ballotId:ballot_id}.as_json
+            end
           else
 
             message_obj = { message: 'Wrong Password' }
@@ -60,5 +64,14 @@ class Api::V1::SessionsController < ApplicationController
       end
     end
   end
+  private
+  def check_eligibility(email,first_name,last_name)
+    Voter.all.each do |voter|
+      if email == voter.email && first_name == voter.first_name && last_name == voter.last_name
+        return voter.ballot.id
+      end
+    end 
     
+  end  
 end
+
