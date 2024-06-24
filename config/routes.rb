@@ -9,7 +9,7 @@ devise_for :users
   namespace :api do
     namespace :v1 do
       resources :ballots
-      
+      put 'vote', to: 'candidates#upvote'
       post "login", to: "sessions#new"
       put "update", to: "sessions#update"
       put "activate", to: "ballots#activate"

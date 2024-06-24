@@ -38,6 +38,16 @@ class  Api::V1::CandidatesController < ApplicationController
             render json: {errors: candidate.errors.full_messages}
         end
     end
+    def upvote
+        candidate_id = params[:candidate_id]
+        @candidate = Candidate.find(candidate_id)
+        if current_user.already_voted?
+          render json: {info:'You already voted'}
+        else
+          @candidate.upvote_from current_user
+          render json: {message: "Vote Registered"}
+        end
+      end
 
     def update 
         candidate = Candidate.find(params[:id])

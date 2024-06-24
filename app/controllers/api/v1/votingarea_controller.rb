@@ -6,9 +6,9 @@ class Api::V1::VotingareaController < ApplicationController
         candidates = []
         ballot.candidates.each do |candidate|
                  if candidate.image.attached?
-                    candidates << candidate.as_json().merge(image: url_for(candidate.image))
+                    candidates << candidate.as_json().merge(image: url_for(candidate.image)).merge(votes:candidate.votes_for.size)
                else
-                 candidates << candidate.as_json()
+                 candidates << candidate.as_json().merge(votes:candidate.votes_for.size)
                end
         end 
         ballot_name = ballot.name 
