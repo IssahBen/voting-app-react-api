@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateVoters < ActiveRecord::Migration[7.1]
   def change
     create_table :voters do |t|
