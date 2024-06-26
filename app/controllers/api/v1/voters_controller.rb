@@ -1,6 +1,6 @@
 class Api::V1::VotersController < ApplicationController
  
-
+  require "csv"
   # GET /voters
   def index
     puts params
@@ -47,6 +47,19 @@ class Api::V1::VotersController < ApplicationController
     end
   end
 
+  def upload
+    puts params
+    ballot_id = params[:ballot_id]
+    cleaned_csv =clean_csv(params[:csv_file])
+    puts 10
+    message = createvoters(cleaned_csv)
+    if message == "added"
+      render json: {message: "Voters Added successfully"}.as_json()
+    else
+      render json: {errors: "Your Record contains an already added voter.New voters were added"}.as_json()
+    end
+
+  end
   # DELETE /voters/1
   def destroy
     id = params[:id]
@@ -56,5 +69,36 @@ class Api::V1::VotersController < ApplicationController
     end 
   end
 
-   
+   private
+    def clean_csv(file)
+        csv=CSV.read(file)
+        cleared_csv = csv.map{|row| row.compact }.reject{|row| row.empty?}
+        array =[]
+        cleared_csv.each_with_index do |row,i|
+            if i == 0
+                next 
+            end 
+            array << row 
+        end
+        return array 
+    end
+
+    def createvoters(array)
+      ballot_id = params[:ballot_id]
+        begin
+            array.each do |voter|
+                first_name = voter[0]
+                last_name = voter[1]
+                email = voter[2]
+                 obj = Voter.create(first_name: first_name,last_name: last_name,email: email,ballot_id:ballot_id)
+
+                 
+            end 
+            "added"
+        rescue Exception 
+            return nil 
+        end
+    end 
+
+
 end

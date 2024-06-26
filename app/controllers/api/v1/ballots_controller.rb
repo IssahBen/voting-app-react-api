@@ -12,7 +12,7 @@ class Api::V1::BallotsController < ApplicationController
   # GET /ballots/1
   def show
 
-    render json: @ballot
+    render json: {ballot: @ballot}.as_json()
   end
 
   # POST /ballots
@@ -25,7 +25,7 @@ class Api::V1::BallotsController < ApplicationController
     if @ballot.save
       render json: {message:"success"}.as_json(), status: :created
     else
-      render json: {errors:@ballot.errors}.as_json(), status: :unprocessable_entity
+      render json: {errors:@ballot.errors.full_messages}.as_json()
     end
   end
 
@@ -34,9 +34,10 @@ class Api::V1::BallotsController < ApplicationController
     name = params[:ballot][:name]
     description = params[:ballot][:description]
     if @ballot.update(name:name,description:description)
-      render json: {message:"successs"}
+      render json: {message:"success"}
     else
-      render json: {errors:@ballot.errors}, status: :unprocessable_entity
+      
+      render json: {errors:@ballot.errors.full_messages}.as_json()
     end
   end
 

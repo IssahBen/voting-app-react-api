@@ -22,6 +22,8 @@ devise_for :users
       resources :ballots do
         resources :candidates
         resources :voters
+        post "upload", to: "voters#upload"
+
       end
     end
   end
