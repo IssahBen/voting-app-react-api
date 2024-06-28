@@ -31,9 +31,9 @@ module Api
           end
         else
           ballot_id = check_eligibility(email, first_name, last_name)
-
+          puts "success"
           if ballot_id
-
+            puts params
             @user = User.create(email:, password:, password_confirmation:,
                                 first_name:, last_name:, role:)
             if @user.save
@@ -45,6 +45,7 @@ module Api
               render json: { message: 'Not a registered Voter' }.as_json
             end
           else
+            put "dfdsfdsfdsfdfdsfdsfsdfsf"
             render json: {message:"Not a registered voter"}
 
         end
