@@ -37,12 +37,16 @@ module Api
             @user = User.create(email:, password:, password_confirmation:,
                                 first_name:, last_name:, role:)
             if @user.save
+              
               render json: { token: @user.authentication_token, user: @user, ballotId: ballot_id }.as_json
             else
+              
               Rails.logger.debug @user.errors.full_messages
               render json: { message: 'Not a registered Voter' }.as_json
             end
-          end
+          else
+            render json: {message:"Not a registered voter"}
+
         end
       end
 
@@ -52,6 +56,8 @@ module Api
         Voter.find_each do |voter|
           if email == voter.email && first_name == voter.first_name && last_name == voter.last_name
             return voter.ballot.id
+          else
+            return false
           end
         end
       end
