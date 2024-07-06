@@ -2,8 +2,8 @@
 
 class Candidate < ApplicationRecord
   before_save do
-    self.first_name = first_name.capitalize
-    self.last_name = last_name.capitalize
+    self.first_name = first_name.strip.capitalize
+    self.last_name = last_name.strip.capitalize
   end
   acts_as_votable
   has_many :ballot_candidates

@@ -46,7 +46,7 @@ module Api
             end
           else
             puts "fdfdsfsdfsdfsd"
-            render json: {message:"Not a registered "}
+            render json: {message:"Not a registered voter"}
           end
         end
       end
@@ -57,10 +57,9 @@ module Api
         Voter.find_each do |voter|
           if email == voter.email && first_name == voter.first_name && last_name == voter.last_name
             return voter.ballot.id
-          else
-            return false
           end
         end
+        return false
       end
 
       # GET /resource/edit

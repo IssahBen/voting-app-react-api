@@ -5,8 +5,8 @@ class Voter < ApplicationRecord
   before_save { self.email = email.downcase }
 
   before_save do
-    self.first_name = first_name.capitalize
-    self.last_name = last_name.capitalize
+    self.first_name = first_name.strip.capitalize
+    self.last_name = last_name.strip.capitalize
   end
 
   validates :first_name, presence: true, length: { minimum: 3, maximum: 25 }
